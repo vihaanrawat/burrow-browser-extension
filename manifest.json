@@ -1,0 +1,7 @@
+{
+    "manifest_version" : 3,
+    "name" : "Burrow",
+    "version" : "1.0.0",
+    "description" : "Maps your rabbit holes, tints the web with the weather, and plays ambient music while you browse.",
+    "minimum_chrome_version": "116"
+}
