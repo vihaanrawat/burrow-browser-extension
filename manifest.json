@@ -1,7 +1,45 @@
 {
-    "manifest_version" : 3,
-    "name" : "Burrow",
-    "version" : "1.0.0",
-    "description" : "Maps your rabbit holes, tints the web with the weather, and plays ambient music while you browse.",
-    "minimum_chrome_version": "116"
+  "manifest_version": 3,
+  "name": "Burrow",
+  "version": "1.0.0",
+  "description": "Maps your rabbit holes, tints the web with the weather, and plays ambient music while you browse.",
+  "minimum_chrome_version": "116",
+  "permissions": [
+    "tabs",
+    "storage",
+    "webNavigation",
+    "alarms",
+    "geolocation",
+    "offscreen",
+    "unlimitedStorage"
+  ],
+  "host_permissions": [
+    "https://api.open-meteo.com/*",
+    "https://geocoding-api.open-meteo.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Burrow"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "http://*/*",
+        "https://*/*"
+      ],
+      "js": [
+        "shared.js",
+        "content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  }
 }
