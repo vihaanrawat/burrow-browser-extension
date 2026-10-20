@@ -93,3 +93,9 @@ input[type=text] {
     background: rgba(0, 0, 0, 0.25);
     font: inherit;
 }
+
+button {
+  font: inherit; cursor: pointer; border-radius: 6px; padding: 7px 11px;
+  border: 1px solid rgba(255,255,255,0.22); background: transparent; color: var(--fg);
+}
+
