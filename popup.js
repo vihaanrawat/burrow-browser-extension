@@ -60,3 +60,26 @@ function useGeo() {
     { timeout: 10000 }
   );
 }
+
+
+(async function init() {
+  const s = await Burrow.getSettings();
+  for (const id of ['tint', 'particles', 'chain']) {
+    $(id).checked = s[id];
+    $(id).addEventListener('change', async () => { await Burrow.saveSettings({ [id]: $(id).checked }); });
+  }
+  if (s.location) $('city').value = s.location.name;
+
+  $('music').value = s.music; $('theme').value = s.theme; $('volume').value = s.volume;
+  $('music').addEventListener('change', async () => { await Burrow.saveSettings({ music: $('music').value }); showMusic(); });
+  $('theme').addEventListener('change', () => Burrow.saveSettings({ theme: $('theme').value }));
+  $('volume').addEventListener('input', () => Burrow.saveSettings({ volume: +$('volume').value }));
+  $('tracks').addEventListener('click', () => { chrome.tabs.create({ url: chrome.runtime.getURL('music.html') }); window.close(); });
+
+  $('set').addEventListener('click', setCity);
+  $('city').addEventListener('keydown', e => { if (e.key === 'Enter') setCity(); });
+  $('geo').addEventListener('click', useGeo);
+  $('open').addEventListener('click', () => { chrome.tabs.create({ url: chrome.runtime.getURL('map.html') }); window.close(); });
+
+  showWeather(); showStats(); showMusic();
+})();
