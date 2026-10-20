@@ -1,31 +1,76 @@
 :root {
-  --bg1: #14181d; --bg2: #212730; --accent: #a3b3c4;
-  --fg: #eef1f4; --dim: #9aa5b1;
-  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
-  --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --bg1: #14181d;
+    --bg2: #212730;
+    --accent: #a3b3c4;
+    --fg: #eef1f4;
+    --dim: #9aa5b1;
+    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
 
-* { box-sizing: border-box; }
+* {
+    box-sizing: border-box;
+}
+
 body {
-  width: 320px; margin: 0; padding: 18px 18px 16px;
-  font: 13px/1.45 var(--sans); color: var(--fg);
-  background: radial-gradient(120% 80% at 0% 0%, var(--bg2), var(--bg1));
+    width: 320px;
+    margin: 0;
+    padding: 18px 18px 16px;
+    font: 13px/1.45 var(--sans);
+    color: var(--fg);
+    background: radial-gradient(120% 80% at 0% 0%, var(--bg2), var(--bg1));
 }
 
-h1 { margin: 0; font: italic 600 28px/1 var(--serif); letter-spacing: 0.01em; }
-.weather { margin: 6px 0 14px; color: var(--accent); font-size: 13px; }
+h1 {
+    margin: 0;
+    font: italic 600 28px/1 var(--serif);
+    letter-spacing: 0.01em;
+}
+
+.weather {
+    margin: 6px 0 14px;
+    color: var(--accent);
+    font-size: 13px;
+}
 
 .switches label {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.07);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 7px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
 }
 
 input[type=checkbox] {
-  appearance: none; width: 34px; height: 19px; margin: 0; border-radius: 10px; cursor: pointer;
-  background: rgba(255,255,255,0.14); position: relative; transition: background .2s;
+    appearance: none;
+    width: 34px;
+    height: 19px;
+    margin: 0;
+    border-radius: 10px;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.14);
+    position: relative;
+    transition: background .2s;
 }
 
 input[type=checkbox]::after {
-  content: ""; position: absolute; top: 2px; left: 2px; width: 15px; height: 15px; border-radius: 50%;
-  background: var(--fg); transition: transform .2s;
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: var(--fg);
+    transition: transform .2s;
 }
+
+input[type=checkbox]:checked {
+    background: var(--accent);
+}
+
+input[type=checkbox]:checked::after {
+    transform: translateX(15px);
+    background: var(--bg1);
+}
+
