@@ -194,6 +194,5 @@ input[type=range] {
     max-width: 205px;
     accent-color: var(--accent);
 }
-
 /* the hidden attribute must beat any display rule set above */
 [hidden] { display: none !important; }
