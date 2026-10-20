@@ -61,7 +61,6 @@ function useGeo() {
   );
 }
 
-
 (async function init() {
   const s = await Burrow.getSettings();
   for (const id of ['tint', 'particles', 'chain']) {
