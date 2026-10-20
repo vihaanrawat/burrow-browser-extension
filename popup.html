@@ -1,18 +1,39 @@
 <!doctype html>
 <html lang="en">
+
 <head>
-  <meta charset="utf-8">
-  <link rel="stylesheet" href="popup.css">
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="popup.css">
 </head>
+
 <body>
-  <header>
-    <h1>Burrow</h1>
-    <p id="wx" class="weather">Set your city to wake the weather.</p>
-  </header>
+    <header>
+        <h1>Burrow</h1>
+        <p id="wx" class="weather">Set your city to wake the weather.</p>
+    </header>
 
 
-  <section class="switches">
-    <label><span>Weather tint</span><input type="checkbox" id="tint"></label>
-    <label><span>Falling rain and snow</span><input type="checkbox" id="particles"></label>
-    <label><span>Connect every page in order</span><input type="checkbox" id="chain"></label>
-  </section>
+    <section class="switches">
+        <label><span>Weather tint</span><input type="checkbox" id="tint"></label>
+        <label><span>Falling rain and snow</span><input type="checkbox" id="particles"></label>
+        <label><span>Connect every page in order</span><input type="checkbox" id="chain"></label>
+    </section>
+
+    <section class="music">
+        <label class="field"><span>Music</span>
+            <select id="music">
+                <option value="off">Off</option>
+                <option value="generated">Original ambient music</option>
+                <option value="own">My own tracks</option>
+            </select>
+        </label>
+        <label class="field" id="themeRow"><span>Mood</span>
+            <select id="theme">
+                <option value="hallownest">Hallownest: hushed piano, deep pads</option>
+                <option value="pharloom">Pharloom: bright bells, slow hymn</option>
+            </select>
+        </label>
+        <label class="field"><span>Volume</span><input type="range" id="volume" min="0.05" max="1" step="0.05"></label>
+        <p id="musicNote" class="msg"></p>
+        <button id="tracks" class="link">Add or remove my tracks</button>
+    </section>
