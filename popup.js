@@ -35,3 +35,5 @@ async function showMusic() {
   } else if (s.music === 'generated') note.textContent = 'Made on the fly, and each site nudges the key.';
   else note.textContent = 'Music is off.';
 }
+
+function say(text) { $('msg').textContent = text; }
