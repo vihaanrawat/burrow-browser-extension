@@ -47,3 +47,16 @@ async function setCity() {
   if (res && res.ok) { say(`Weather set for ${res.name}.`); $('city').value = res.name; showWeather(); }
   else say((res && res.error) || 'Could not set that city.');
 }
+
+function useGeo() {
+  say('Asking the browser for your location...');
+  navigator.geolocation.getCurrentPosition(
+    async pos => {
+      const res = await chrome.runtime.sendMessage({ type: 'setCoords', lat: pos.coords.latitude, lon: pos.coords.longitude });
+      say(res && res.ok ? 'Location set.' : (res && res.error) || 'Could not fetch the weather.');
+      showWeather();
+    },
+    () => say('Location was blocked. Type your city instead.'),
+    { timeout: 10000 }
+  );
+}
