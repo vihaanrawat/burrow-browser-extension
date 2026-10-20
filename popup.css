@@ -11,3 +11,6 @@ body {
   font: 13px/1.45 var(--sans); color: var(--fg);
   background: radial-gradient(120% 80% at 0% 0%, var(--bg2), var(--bg1));
 }
+
+h1 { margin: 0; font: italic 600 28px/1 var(--serif); letter-spacing: 0.01em; }
+.weather { margin: 6px 0 14px; color: var(--accent); font-size: 13px; }
