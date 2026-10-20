@@ -24,3 +24,14 @@ async function showStats() {
   $('stats').textContent =
     `This hole: ${tree.keys.length} pages, ${tree.maxDepth} links deep, ${Burrow.fmtDuration(time)} spent.`;
 }
+
+async function showMusic() {
+  const s = await Burrow.getSettings();
+  $('themeRow').hidden = s.music !== 'generated';
+  const note = $('musicNote');
+  if (s.music === 'own') {
+    const n = (await Burrow.listTracks().catch(() => [])).length;
+    note.textContent = n ? `${n} ${n === 1 ? 'track' : 'tracks'} ready, played in shuffled order.` : 'No tracks yet. Add some below.';
+  } else if (s.music === 'generated') note.textContent = 'Made on the fly, and each site nudges the key.';
+  else note.textContent = 'Music is off.';
+}
