@@ -74,3 +74,22 @@ input[type=checkbox]:checked::after {
     background: var(--bg1);
 }
 
+.place {
+    margin-top: 14px;
+}
+
+.row {
+    display: flex;
+    gap: 6px;
+}
+
+input[type=text] {
+    flex: 1;
+    min-width: 0;
+    padding: 7px 9px;
+    border-radius: 6px;
+    color: var(--fg);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: rgba(0, 0, 0, 0.25);
+    font: inherit;
+}
