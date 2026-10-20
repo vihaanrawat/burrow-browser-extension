@@ -104,6 +104,7 @@ const Burrow = (() => {
   }
 
 
+  
    /* ---------- your own tracks (kept in this extension's own storage, never uploaded) ---------- */
   const openTracksDb = () => new Promise((res, rej) => {
     const r = indexedDB.open('burrow-music', 1);
