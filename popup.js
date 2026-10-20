@@ -37,3 +37,13 @@ async function showMusic() {
 }
 
 function say(text) { $('msg').textContent = text; }
+
+
+async function setCity() {
+  const city = $('city').value.trim();
+  if (!city) return say('Type a city first.');
+  say('Looking it up...');
+  const res = await chrome.runtime.sendMessage({ type: 'setCity', city });
+  if (res && res.ok) { say(`Weather set for ${res.name}.`); $('city').value = res.name; showWeather(); }
+  else say((res && res.error) || 'Could not set that city.');
+}
