@@ -173,9 +173,27 @@ button:hover {
 }
 
 select {
-  min-width: 0; flex: 1; max-width: 205px; padding: 6px 8px; border-radius: 6px; font: inherit; color: var(--fg);
-  border: 1px solid rgba(255,255,255,0.18); background: rgba(0,0,0,0.25);
+    min-width: 0;
+    flex: 1;
+    max-width: 205px;
+    padding: 6px 8px;
+    border-radius: 6px;
+    font: inherit;
+    color: var(--fg);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: rgba(0, 0, 0, 0.25);
 }
 
-select option { background: #1b1f26; color: #eef1f4; }
-input[type=range] { flex: 1; max-width: 205px; accent-color: var(--accent); }
+select option {
+    background: #1b1f26;
+    color: #eef1f4;
+}
+
+input[type=range] {
+    flex: 1;
+    max-width: 205px;
+    accent-color: var(--accent);
+}
+
+/* the hidden attribute must beat any display rule set above */
+[hidden] { display: none !important; }
