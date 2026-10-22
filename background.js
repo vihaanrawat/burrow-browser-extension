@@ -88,3 +88,5 @@ chrome.tabs.onCreated.addListener(tab => {
         if (o) { st.tabs[tab.id] = { ...o }; await save(st); }
     });
 });
+
+
