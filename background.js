@@ -89,4 +89,15 @@ chrome.tabs.onCreated.addListener(tab => {
     });
 });
 
-
+chrome.tabs.onUpdated.addListener((tabId, info, tab) => {
+    if (info.title || info.status === 'complete') {
+        enqueue(async () => {
+            const st = await load();
+            const t = st.tabs[tabId];
+            if (!t || !tab.title || pageKey(tab.url) !== t.key) return;
+            const s = st.sessions.find(x => x.id === t.sid);
+            const n = s && s.nodes[t.key];
+            if (n && n.title !== tab.title) { n.title = tab.title; await save(st); }
+        });
+    }
+});
