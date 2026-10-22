@@ -101,3 +101,14 @@ chrome.tabs.onUpdated.addListener((tabId, info, tab) => {
         });
     }
 });
+
+chrome.tabs.onUpdated.addListener((_id, info) => { if (info.audible !== undefined) enqueue(() => reconcile()); });
+chrome.tabs.onRemoved.addListener(tabId => enqueue(async () => {
+    const st = await load();
+    delete st.tabs[tabId];
+    await save(st);
+    await reconcile();
+}));
+chrome.tabs.onActivated.addListener(() => enqueue(() => reconcile()));
+chrome.windows.onFocusChanged.addListener(() => enqueue(() => reconcile()));
+
