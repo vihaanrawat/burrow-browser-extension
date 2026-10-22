@@ -184,3 +184,12 @@ async function fetchWeather() {
     return w;
 }
 
+async function useLocation(loc) {
+    try {
+        await Burrow.saveSettings({ location: loc });
+        const weather = await fetchWeather();
+        return { ok: true, name: loc.name, weather };
+    } catch (e) { return { ok: false, error: e.message }; }
+}
+
+
