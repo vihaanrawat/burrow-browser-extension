@@ -20,3 +20,12 @@ const save = st => Promise.all([
     chrome.storage.local.set({ sessions: st.sessions }),
     chrome.storage.session.set({ tabs: st.tabs, active: st.active })
 ]);
+
+function pageKey(url) {
+  try {
+    const u = new URL(url);
+    if (u.protocol !== 'http:' && u.protocol !== 'https:') return null;
+    u.hash = '';
+    return u.href;
+  } catch { return null; }
+}
