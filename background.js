@@ -63,3 +63,14 @@ function recordNav(st, tabId, url, transition, qualifiers, now, chain) {
     session.lastActive = now;
     st.tabs[tabId] = { key, sid: session.id };
 }
+
+function onNav(d) {
+    if (d.frameId !== 0) return;
+    enqueue(async () => {
+        const st = await load();
+        const { chain } = await Burrow.getSettings();
+        recordNav(st, d.tabId, d.url, d.transitionType, d.transitionQualifiers || [], Date.now(), chain);
+        await save(st);
+        await reconcile();
+    });
+}
