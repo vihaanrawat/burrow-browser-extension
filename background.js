@@ -74,3 +74,9 @@ function onNav(d) {
         await reconcile();
     });
 }
+
+chrome.webNavigation.onCommitted.addListener(onNav);
+chrome.webNavigation.onHistoryStateUpdated.addListener(onNav);
+
+
+
