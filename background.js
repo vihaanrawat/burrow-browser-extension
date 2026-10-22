@@ -210,5 +210,20 @@ chrome.runtime.onMessage.addListener((m, _sender, reply) => {
     }
 });
 
-
+/* ---------- lifecycle ---------- */
+function setup() {
+    chrome.alarms.create('weather', { periodInMinutes: 30 });
+    chrome.alarms.create('tick', { periodInMinutes: 1 });
+    fetchWeather().catch(() => { });
+    enqueue(() => reconcile());
+}
+chrome.runtime.onInstalled.addListener(setup);
+chrome.runtime.onStartup.addListener(setup);
+chrome.alarms.onAlarm.addListener(a => {
+    if (a.name === 'weather') fetchWeather().catch(() => { });
+    if (a.name === 'tick') enqueue(() => reconcile(true));
+});
+chrome.storage.onChanged.addListener((changes, area) => {
+    if (area === 'local' && (changes.settings || changes.weather)) enqueue(() => reconcile());
+});
 
