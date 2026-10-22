@@ -193,3 +193,22 @@ async function useLocation(loc) {
 }
 
 
+chrome.runtime.onMessage.addListener((m, _sender, reply) => {
+    if (m.type === 'offscreen-ready') { enqueue(() => reconcile()); return; }
+    if (m.type === 'setCity') {
+        geocode(m.city).then(useLocation, e => ({ ok: false, error: e.message })).then(reply);
+        return true;
+    }
+    if (m.type === 'setCoords') { useLocation({ name: 'My location', lat: m.lat, lon: m.lon }).then(reply); return true; }
+    if (m.type === 'clearAll') {
+        enqueue(async () => {
+            await chrome.storage.local.set({ sessions: [] });
+            await chrome.storage.session.set({ tabs: {}, active: null });
+            reply({ ok: true });
+        });
+        return true;
+    }
+});
+
+
+
