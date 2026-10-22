@@ -79,4 +79,12 @@ chrome.webNavigation.onCommitted.addListener(onNav);
 chrome.webNavigation.onHistoryStateUpdated.addListener(onNav);
 
 
-
+// A tab opened from a link inherits its opener's place in the hole.
+chrome.tabs.onCreated.addListener(tab => {
+    if (tab.openerTabId == null) return;
+    enqueue(async () => {
+        const st = await load();
+        const o = st.tabs[tab.openerTabId];
+        if (o) { st.tabs[tab.id] = { ...o }; await save(st); }
+    });
+});
