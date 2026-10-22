@@ -112,3 +112,32 @@ chrome.tabs.onRemoved.addListener(tabId => enqueue(async () => {
 chrome.tabs.onActivated.addListener(() => enqueue(() => reconcile()));
 chrome.windows.onFocusChanged.addListener(() => enqueue(() => reconcile()));
 
+
+/* Works out which page you're looking at right now, credits time to the previous one,
+   . */
+async function reconcile(tick = false) {
+    const st = await load();
+    const now = Date.now();
+    const w = await chrome.windows.getLastFocused({ populate: true }).catch(() => null);
+    const tab = w && w.focused ? w.tabs.find(t => t.active) : null;
+    const entry = tab && st.tabs[tab.id];
+    const want = entry ? { tabId: tab.id, key: entry.key, sid: entry.sid } : null;
+    const cur = st.active;
+    const same = cur && want && cur.tabId === want.tabId && cur.key === want.key && cur.sid === want.sid;
+
+    const credit = () => {
+        const s = st.sessions.find(x => x.id === cur.sid);
+        const n = s && s.nodes[cur.key];
+        if (n) { n.dwell += Math.min(now - cur.since, MAX_DWELL); s.lastActive = now; }
+    };
+
+    if (same && tick) {
+        credit(); cur.since = now; await save(st);
+    } else if (!same) {
+        if (cur) credit();
+        st.active = want ? { ...want, since: now } : null;
+        await save(st);
+    }
+    await pushMusic(tab);
+}
+
