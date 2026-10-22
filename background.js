@@ -10,3 +10,13 @@ const FRESH_START = new Set(['typed', 'generated', 'auto_bookmark', 'start_page'
 let queue = Promise.resolve();
 const enqueue = fn => { queue = queue.then(() => fn()).catch(e => console.error('[burrow]', e)); return queue; };
 
+
+const load = async () => {
+    const { sessions = [] } = await chrome.storage.local.get('sessions');
+    const { tabs = {}, active = null } = await chrome.storage.session.get(['tabs', 'active']);
+    return { sessions, tabs, active };
+};
+const save = st => Promise.all([
+    chrome.storage.local.set({ sessions: st.sessions }),
+    chrome.storage.session.set({ tabs: st.tabs, active: st.active })
+]);
