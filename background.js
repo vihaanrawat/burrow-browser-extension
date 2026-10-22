@@ -5,3 +5,8 @@ const MAX_SESSIONS = 40;
 const MAX_DWELL = 5 * 60 * 1000;      // never credit more than this per interval (sleep, lunch...)
 const FRESH_START = new Set(['typed', 'generated', 'auto_bookmark', 'start_page', 'keyword', 'keyword_generated']);
 
+
+/* Events arrive in parallel but our state lives in storage, so run everything one at a time. */
+let queue = Promise.resolve();
+const enqueue = fn => { queue = queue.then(() => fn()).catch(e => console.error('[burrow]', e)); return queue; };
+
