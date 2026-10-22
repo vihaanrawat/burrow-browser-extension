@@ -145,22 +145,24 @@ async function reconcile(tick = false) {
 /* ---------- music ---------- */
 // Music is global: it plays while Burrow is switched on, and steps aside whenever any tab is making sound.
 async function pushMusic(tab) {
-  const s = await Burrow.getSettings();
-  const { weather } = await chrome.storage.local.get('weather');
-  const audible = (await chrome.tabs.query({ audible: true })).length > 0;
-  const playing = s.music !== 'off' && !audible;
-  const has = (await chrome.runtime.getContexts({ contextTypes: ['OFFSCREEN_DOCUMENT'] })).length > 0;
+    const s = await Burrow.getSettings();
+    const { weather } = await chrome.storage.local.get('weather');
+    const audible = (await chrome.tabs.query({ audible: true })).length > 0;
+    const playing = s.music !== 'off' && !audible;
+    const has = (await chrome.runtime.getContexts({ contextTypes: ['OFFSCREEN_DOCUMENT'] })).length > 0;
 
-  if (!has) {
-    if (!playing) return;
-    await chrome.offscreen.createDocument({
-      url: 'offscreen.html', reasons: ['AUDIO_PLAYBACK'], justification: 'Background music while browsing'
-    });
-    return; // it announces itself with "offscreen-ready" and we push again
-  }
-  chrome.runtime.sendMessage({
-    target: 'offscreen', type: 'music', playing, mode: s.music, theme: s.theme, volume: s.volume,
-    host: tab ? Burrow.hostOf(tab.url) : null, mood: weather ? weather.mood : null
-  }).catch(() => {});
+    if (!has) {
+        if (!playing) return;
+        await chrome.offscreen.createDocument({
+            url: 'offscreen.html', reasons: ['AUDIO_PLAYBACK'], justification: 'Background music while browsing'
+        });
+        return; // it announces itself with "offscreen-ready" and we push again
+    }
+    chrome.runtime.sendMessage({
+        target: 'offscreen', type: 'music', playing, mode: s.music, theme: s.theme, volume: s.volume,
+        host: tab ? Burrow.hostOf(tab.url) : null, mood: weather ? weather.mood : null
+    }).catch(() => { });
 }
+
+
 
