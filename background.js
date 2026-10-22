@@ -164,5 +164,23 @@ async function pushMusic(tab) {
     }).catch(() => { });
 }
 
+/* ---------- weather ---------- */
+async function geocode(city) {
+    const r = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=en&format=json`);
+    const j = await r.json();
+    const g = j.results && j.results[0];
+    if (!g) throw new Error('No city found with that name. Try adding the country.');
+    return { name: [g.name, g.country_code].filter(Boolean).join(', '), lat: g.latitude, lon: g.longitude };
+}
 
+async function fetchWeather() {
+    const { location } = await Burrow.getSettings();
+    if (!location) return null;
+    const r = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${location.lat}&longitude=${location.lon}&current=temperature_2m,weather_code,is_day&timezone=auto`);
+    if (!r.ok) throw new Error('Weather service unavailable');
+    const c = (await r.json()).current;
+    const w = { code: c.weather_code, temp: Math.round(c.temperature_2m), isDay: c.is_day, mood: Burrow.moodFromCode(c.weather_code), city: location.name, updated: Date.now() };
+    await chrome.storage.local.set({ weather: w });
+    return w;
+}
 
