@@ -192,7 +192,6 @@ async function useLocation(loc) {
     } catch (e) { return { ok: false, error: e.message }; }
 }
 
-
 chrome.runtime.onMessage.addListener((m, _sender, reply) => {
     if (m.type === 'offscreen-ready') { enqueue(() => reconcile()); return; }
     if (m.type === 'setCity') {
