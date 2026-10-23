@@ -80,3 +80,37 @@ function render() {
 
     if (needsFit) { fit(); needsFit = false; } else applyView();
 }
+
+
+function renderStats(s, tree) {
+    const list = $('stats'), story = $('story');
+    list.replaceChildren();
+    if (!s) { story.textContent = 'Your next rabbit hole will be drawn here.'; return; }
+    const nodes = Object.values(s.nodes);
+    const hosts = new Set(nodes.map(n => n.host));
+    const time = nodes.reduce((a, n) => a + n.dwell, 0);
+    const add = (num, label) => {
+        const li = document.createElement('li');
+        const b = document.createElement('b');
+        b.textContent = num;
+        li.append(b, label);
+        list.append(li);
+    };
+
+    add(nodes.length, 'pages');
+    add(tree.maxDepth, tree.maxDepth === 1 ? 'link deep' : 'links deep');
+    add(hosts.size, 'sites');
+    add(Burrow.fmtDuration(time), 'spent');
+
+    const first = s.nodes[tree.roots[0]], last = s.nodes[s.last];
+    story.replaceChildren();
+    const strong = t => {
+        const b = document.createElement('strong');
+        b.textContent = t;
+        return b;
+    };
+    if (tree.maxDepth === 0) story.append('So far you have only visited ', strong(first.host), '. Follow a link to start the trail.');
+    else story.append('It began at ', strong(first.host), ' and went ', strong(String(tree.maxDepth)), tree.maxDepth === 1 ? ' link deep across ' : ' links deep across ', strong(String(hosts.size)),
+        hosts.size === 1 ? ' site' : ' sites', last ? ', and the latest stop is ' : '.', last ? strong(last.host) : '', last ? '.' : '');
+}
+
