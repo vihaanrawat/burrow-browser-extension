@@ -190,3 +190,24 @@ function fillSelect() {
     if (selected != null) sel.value = selected;
 }
 
+async function load() {
+    ({ sessions =[] } = await chrome.storage.local.get('sessions'));
+    if (!sessions.some(x => x.id === selected)) {
+        selected = sessions.length ? sessions[sessions.length - 1].id : null;
+        needsFit = true;
+    }
+    fillSelect();
+    render();
+}
+
+async function skin() {
+    const { weather } = await chrome.storage.local.get('weather');
+    const ws = Burrow.weatherStyle(weather);
+    if (!ws) { $('wx').textContent = 'Set a city in the popup to bring in the weather.'; return; }
+    const r = document.documentElement.style;
+    r.setProperty('--accent', ws.accent);
+    r.setProperty('--bg1', ws.bg[0]);
+    r.setProperty('--bg2', ws.bg[1]);
+    $('wx').textContent = `${ws.label}, ${weather.temp}°C in ${weather.city}`;
+}
+
