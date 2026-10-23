@@ -114,3 +114,20 @@ function renderStats(s, tree) {
         hosts.size === 1 ? ' site' : ' sites', last ? ', and the latest stop is ' : '.', last ? strong(last.host) : '', last ? '.' : '');
 }
 
+/* ---------- view: fit, zoom, pan ---------- */
+function fit() {
+  const bb = world.getBBox();
+  if (!bb.width) return;
+  const w = svg.clientWidth, h = svg.clientHeight;
+  const natural = Math.min((w - 120) / bb.width, (h - 120) / bb.height);
+  const k = Math.max(0.45, Math.min(1.1, natural));
+  if (natural >= 0.45) {
+    view = { k, x: (w - bb.width * k) / 2 - bb.x * k, y: (h - bb.height * k) / 2 - bb.y * k };
+  } else {
+    const p = lastPos[lastKey] || { x: 0, y: 0 };
+    view = { k, x: w * 0.65 - p.x * k, y: h / 2 - p.y * k };
+  }
+  applyView();
+}
+
+
