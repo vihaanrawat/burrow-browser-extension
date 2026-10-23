@@ -159,3 +159,21 @@ svg.addEventListener('pointerup', endDrag);
 svg.addEventListener('pointercancel', endDrag);
 
 
+/* ---------- tooltip ---------- */
+function showTip(e, n) {
+    tip.replaceChildren();
+    const b = document.createElement('b'); b.textContent = n.title || n.host;
+    const u = document.createElement('span'); u.textContent = clip(n.url, 80);
+    const f = document.createElement('span'); f.className = 'facts';
+    f.textContent = `Visited ${n.visits} ${n.visits === 1 ? 'time' : 'times'}, ${Burrow.fmtDuration(n.dwell)} here`;
+    tip.append(b, u, f);
+    tip.hidden = false;
+    moveTip(e);
+}
+function moveTip(e) {
+    const w = tip.offsetWidth, h = tip.offsetHeight;
+    tip.style.left = Math.min(e.clientX + 16, innerWidth - w - 8) + 'px';
+    tip.style.top = Math.min(e.clientY + 16, innerHeight - h - 8) + 'px';
+}
+
+
