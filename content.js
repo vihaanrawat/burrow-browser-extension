@@ -27,55 +27,55 @@
         }));
     }
 
-     function frame(t) {
-    g.clearRect(0, 0, canvas.width, canvas.height);
-    if (mode === 'rain') {
-      g.strokeStyle = 'rgba(190,215,255,0.35)';
-      g.lineWidth = 1;
-      g.beginPath();
-      for (const d of drops) {
-        g.moveTo(d.x, d.y);
-        g.lineTo(d.x - d.s * 0.25, d.y + d.s);
-        d.y += d.v; d.x -= d.v * 0.25;
-        if (d.y > canvas.height) { d.y = -d.s; d.x = Math.random() * (canvas.width + 100); }
-        if (d.x < -20) d.x = canvas.width + 20;
-      }
-      g.stroke();
-    } else {
-      g.fillStyle = 'rgba(255,255,255,0.75)';
-      for (const d of drops) {
-        g.beginPath();
-        g.arc(d.x, d.y, d.s, 0, 6.283);
-        g.fill();
-        d.y += d.v; d.x += Math.sin(t / 1500 + d.p) * 0.5;
-        if (d.y > canvas.height + 5) { d.y = -5; d.x = Math.random() * canvas.width; }
-      }
+    function frame(t) {
+        g.clearRect(0, 0, canvas.width, canvas.height);
+        if (mode === 'rain') {
+            g.strokeStyle = 'rgba(190,215,255,0.35)';
+            g.lineWidth = 1;
+            g.beginPath();
+            for (const d of drops) {
+                g.moveTo(d.x, d.y);
+                g.lineTo(d.x - d.s * 0.25, d.y + d.s);
+                d.y += d.v; d.x -= d.v * 0.25;
+                if (d.y > canvas.height) { d.y = -d.s; d.x = Math.random() * (canvas.width + 100); }
+                if (d.x < -20) d.x = canvas.width + 20;
+            }
+            g.stroke();
+        } else {
+            g.fillStyle = 'rgba(255,255,255,0.75)';
+            for (const d of drops) {
+                g.beginPath();
+                g.arc(d.x, d.y, d.s, 0, 6.283);
+                g.fill();
+                d.y += d.v; d.x += Math.sin(t / 1500 + d.p) * 0.5;
+                if (d.y > canvas.height + 5) { d.y = -5; d.x = Math.random() * canvas.width; }
+            }
+        }
+        raf = requestAnimationFrame(frame);
     }
-    raf = requestAnimationFrame(frame);
-  }
 
-  function setMode(next) {
-    if (next === mode) return;
-    cancelAnimationFrame(raf);
-    mode = next;
-    g.clearRect(0, 0, canvas.width, canvas.height);
-    if (!mode) return;
-    resize(); spawn();
-    raf = requestAnimationFrame(frame);
-  }
+    function setMode(next) {
+        if (next === mode) return;
+        cancelAnimationFrame(raf);
+        mode = next;
+        g.clearRect(0, 0, canvas.width, canvas.height);
+        if (!mode) return;
+        resize(); spawn();
+        raf = requestAnimationFrame(frame);
+    }
 
-  async function apply() {
-    const [s, { weather }] = await Promise.all([Burrow.getSettings(), chrome.storage.local.get('weather')]);
-    const ws = Burrow.weatherStyle(weather);
-    if (!ws) { layer.style.opacity = '0'; setMode(null); return; }
-    layer.style.background = s.tint ? ws.tintCss : 'none';
-    layer.style.opacity = '1';
-    setMode(s.particles && ws.particles && !reduceMotion ? ws.particles : null);
-  }
+    async function apply() {
+        const [s, { weather }] = await Promise.all([Burrow.getSettings(), chrome.storage.local.get('weather')]);
+        const ws = Burrow.weatherStyle(weather);
+        if (!ws) { layer.style.opacity = '0'; setMode(null); return; }
+        layer.style.background = s.tint ? ws.tintCss : 'none';
+        layer.style.opacity = '1';
+        setMode(s.particles && ws.particles && !reduceMotion ? ws.particles : null);
+    }
 
-  apply().catch(() => {});
-  chrome.storage.onChanged.addListener((c, area) => {
-    if (area === 'local' && (c.settings || c.weather)) apply().catch(() => {});
-  });
-  addEventListener('resize', () => { if (mode) { resize(); spawn(); } });
+    apply().catch(() => { });
+    chrome.storage.onChanged.addListener((c, area) => {
+        if (area === 'local' && (c.settings || c.weather)) apply().catch(() => { });
+    });
+    addEventListener('resize', () => { if (mode) { resize(); spawn(); } });
 })();
