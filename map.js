@@ -211,3 +211,22 @@ async function skin() {
     $('wx').textContent = `${ws.label}, ${weather.temp}°C in ${weather.city}`;
 }
 
+$('sessionSel').addEventListener('change', e => { selected = +e.target.value; needsFit = true; render(); });
+$('fit').addEventListener('click', fit);
+$('clear').addEventListener('click', async () => {
+    if (!confirm('Delete every mapped rabbit hole? This cannot be undone.')) return;
+    await chrome.runtime.sendMessage({ type: 'clearAll' });
+    selected = null; load();
+});
+addEventListener('resize', () => { if (needsFit) fit(); });
+
+let timer = 0;
+chrome.storage.onChanged.addListener((c, area) => {
+    if (area !== 'local') return;
+    if (c.sessions) { clearTimeout(timer); timer = setTimeout(load, 400); }
+    if (c.weather) skin();
+});
+
+skin();
+load();
+
