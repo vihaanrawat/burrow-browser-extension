@@ -22,3 +22,24 @@
     </header>
 
     <ul id="stats" class="stats"></ul>
+
+    <main>
+        <svg id="svg" role="img" aria-label="Map of the pages you visited, left to right">
+            <defs>
+                <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
+                    <feGaussianBlur stdDeviation="3" result="b" />
+                    <feMerge>
+                        <feMergeNode in="b" />
+                        <feMergeNode in="SourceGraphic" />
+                    </feMerge>
+                </filter>
+            </defs>
+            <g id="world"></g>
+        </svg>
+        <p class="legend">Solid line: a link you clicked. Dotted line: the next page you opened.</p>
+        <div id="empty" class="empty" hidden>
+            <p>No trail yet.</p>
+            <p>Open a page and follow a few links. Each page you reach appears here, and this map updates as you go.</p>
+        </div>
+        <div id="tip" class="tip" hidden></div>
+    </main>
