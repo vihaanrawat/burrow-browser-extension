@@ -116,18 +116,29 @@ function renderStats(s, tree) {
 
 /* ---------- view: fit, zoom, pan ---------- */
 function fit() {
-  const bb = world.getBBox();
-  if (!bb.width) return;
-  const w = svg.clientWidth, h = svg.clientHeight;
-  const natural = Math.min((w - 120) / bb.width, (h - 120) / bb.height);
-  const k = Math.max(0.45, Math.min(1.1, natural));
-  if (natural >= 0.45) {
-    view = { k, x: (w - bb.width * k) / 2 - bb.x * k, y: (h - bb.height * k) / 2 - bb.y * k };
-  } else {
-    const p = lastPos[lastKey] || { x: 0, y: 0 };
-    view = { k, x: w * 0.65 - p.x * k, y: h / 2 - p.y * k };
-  }
-  applyView();
+    const bb = world.getBBox();
+    if (!bb.width) return;
+    const w = svg.clientWidth, h = svg.clientHeight;
+    const natural = Math.min((w - 120) / bb.width, (h - 120) / bb.height);
+    const k = Math.max(0.45, Math.min(1.1, natural));
+    if (natural >= 0.45) {
+        view = { k, x: (w - bb.width * k) / 2 - bb.x * k, y: (h - bb.height * k) / 2 - bb.y * k };
+    } else {
+        const p = lastPos[lastKey] || { x: 0, y: 0 };
+        view = { k, x: w * 0.65 - p.x * k, y: h / 2 - p.y * k };
+    }
+    applyView();
 }
+
+svg.addEventListener('wheel', e => {
+    e.preventDefault();
+    const r = svg.getBoundingClientRect();
+    const mx = e.clientX - r.left, my = e.clientY - r.top;
+    const k = Math.min(3, Math.max(0.15, view.k * Math.exp(-e.deltaY * 0.0015)));
+    view.x = mx - (mx - view.x) * (k / view.k);
+    view.y = my - (my - view.y) * (k / view.k);
+    view.k = k;
+    applyView();
+}, { passive: false });
 
 
