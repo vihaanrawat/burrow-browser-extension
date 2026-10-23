@@ -176,4 +176,17 @@ function moveTip(e) {
     tip.style.top = Math.min(e.clientY + 16, innerHeight - h - 8) + 'px';
 }
 
+/* ---------- data and weather skin ---------- */
+function fillSelect() {
+    const sel = $('sessionSel');
+    sel.replaceChildren();
+    [...sessions].reverse().forEach(s => {
+        const o = document.createElement('option');
+        o.value = s.id;
+        const when = new Date(s.start).toLocaleString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+        o.textContent = `${when}, ${Object.keys(s.nodes).length} pages`;
+        sel.append(o);
+    });
+    if (selected != null) sel.value = selected;
+}
 
