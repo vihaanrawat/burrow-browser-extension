@@ -14,3 +14,7 @@ function el(tag, attrs, text) {
     if (text != null) e.textContent = text;
     return e;
 }
+
+const clip = (s, n) => (s.length > n ? s.slice(0, n - 1) + '…' : s);
+const applyView = () => world.setAttribute('transform', `translate(${view.x} ${view.y}) scale(${view.k})`);
+
