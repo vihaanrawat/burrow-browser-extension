@@ -141,4 +141,21 @@ svg.addEventListener('wheel', e => {
     applyView();
 }, { passive: false });
 
+let drag = null;
+svg.addEventListener('pointerdown', e => {
+    if (e.target.closest('.node')) return;
+    drag = { x: e.clientX, y: e.clientY, vx: view.x, vy: view.y };
+    svg.setPointerCapture(e.pointerId);
+    svg.classList.add('dragging');
+});
+svg.addEventListener('pointermove', e => {
+    if (!drag) return;
+    view.x = drag.vx + e.clientX - drag.x;
+    view.y = drag.vy + e.clientY - drag.y;
+    applyView();
+});
+const endDrag = () => { drag = null; svg.classList.remove('dragging'); };
+svg.addEventListener('pointerup', endDrag);
+svg.addEventListener('pointercancel', endDrag);
+
 
