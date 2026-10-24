@@ -26,3 +26,4 @@ body {
     background: radial-gradient(90% 70% at 15% 0%, var(--bg2), var(--bg1));
     transition: background 1.5s;
 }
+
