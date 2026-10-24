@@ -27,3 +27,16 @@ body {
     transition: background 1.5s;
 }
 
+header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 6px 28px;
+    padding: 18px 28px 6px;
+}
+
+.title {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+}
