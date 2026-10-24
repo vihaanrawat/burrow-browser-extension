@@ -187,3 +187,45 @@ svg.dragging {
         opacity: 0.6;
     }
 }
+
+text {
+    paint-order: stroke;
+    stroke: var(--bg1);
+    stroke-width: 4px;
+    stroke-linejoin: round;
+    pointer-events: none;
+}
+
+.host {
+    font: 600 12px var(--sans);
+    fill: var(--fg);
+}
+
+.title-text {
+    font: 11.5px var(--sans);
+    fill: var(--dim);
+}
+
+.empty {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    color: var(--dim);
+    text-align: center;
+    padding: 0 24px;
+    pointer-events: none;
+}
+
+.empty p:first-child {
+    font: italic 22px var(--serif);
+    color: var(--fg);
+}
+
+.empty p {
+    margin: 0;
+    max-width: 44ch;
+}
