@@ -229,3 +229,33 @@ text {
     margin: 0;
     max-width: 44ch;
 }
+
+.tip {
+    position: fixed;
+    z-index: 5;
+    max-width: 340px;
+    padding: 9px 12px;
+    border-radius: 8px;
+    pointer-events: none;
+    background: rgba(8, 10, 14, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.45);
+}
+
+.tip b {
+    display: block;
+    margin-bottom: 2px;
+}
+
+.tip span {
+    display: block;
+    color: var(--dim);
+    font-size: 12px;
+    word-break: break-all;
+}
+
+.tip .facts {
+    margin-top: 5px;
+    color: var(--accent);
+    word-break: normal;
+}
