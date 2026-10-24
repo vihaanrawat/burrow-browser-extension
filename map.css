@@ -259,3 +259,25 @@ text {
     color: var(--accent);
     word-break: normal;
 }
+
+/* the hidden attribute must beat any display rule set above */
+[hidden] {
+    display: none !important;
+}
+
+.edge.chain {
+    stroke-dasharray: 1 7;
+    stroke-linecap: round;
+    stroke-width: 2.5;
+    opacity: 0.55;
+}
+
+.legend {
+    position: absolute;
+    left: 28px;
+    bottom: 14px;
+    margin: 0;
+    color: var(--dim);
+    font-size: 12px;
+    pointer-events: none;
+}
