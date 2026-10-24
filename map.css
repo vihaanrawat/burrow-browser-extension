@@ -130,3 +130,60 @@ svg {
 svg.dragging {
     cursor: grabbing;
 }
+
+.edge {
+    fill: none;
+    stroke-width: 2;
+    opacity: 0.42;
+}
+
+.edge.extra {
+    stroke-dasharray: 4 5;
+    opacity: 0.3;
+}
+
+.node {
+    cursor: pointer;
+}
+
+.node .dot {
+    filter: url(#glow);
+}
+
+.node:hover .dot {
+    stroke: var(--fg);
+    stroke-width: 2;
+}
+
+.root-ring {
+    fill: none;
+    stroke: var(--dim);
+    stroke-width: 1;
+}
+
+.pulse {
+    fill: none;
+    stroke-width: 2;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: pulse 2.4s ease-out infinite;
+}
+
+@keyframes pulse {
+    from {
+        transform: scale(0.8);
+        opacity: 0.9;
+    }
+
+    to {
+        transform: scale(1.7);
+        opacity: 0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .pulse {
+        animation: none;
+        opacity: 0.6;
+    }
+}
