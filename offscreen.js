@@ -58,3 +58,8 @@ const padVoices = [['sawtooth', -6, 0.5], ['sawtooth', 6, 0.5], ['triangle', 0, 
    o.connect(g); g.connect(pad); o.start();
    return o;
 });
+
+const THEMES = {
+   hallownest: { scale: [0, 2, 3, 5, 7, 8, 10], prog: [0, 5, 2, 6], beat: 1.7, density: 0.42, arp: false, bell: false, pad: 0.06, dur: [3.5, 5.5] },
+   pharloom: { scale: [0, 2, 3, 5, 7, 8, 11], prog: [0, 5, 3, 4], beat: 0.95, density: 0.8, arp: true, bell: true, pad: 0.05, dur: [1.6, 2.6] }
+};
