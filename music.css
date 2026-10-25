@@ -119,7 +119,6 @@ button:hover {
     outline: 2px solid var(--accent);
     outline-offset: 2px;
 }
-
 /* the hidden attribute must beat any display rule set above */
 [hidden] {
     display: none !important;
