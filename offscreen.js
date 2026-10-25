@@ -68,3 +68,21 @@ const ARP = [0, 1, 2, 3, 2, 1, 2, 1];
 const midiToHz = m => 440 * Math.pow(2, (m - 69) / 12);
 const degSemi = (scale, n) => scale[((n % 7) + 7) % 7] + 12 * Math.floor(n / 7);
 const rand = (a, b) => a + Math.random() * (b - a);
+
+function note(freq, t, dur, vel, bell) {
+   const env = ctx.createGain();
+   const lp = ctx.createBiquadFilter();
+   lp.type = 'lowpass'; lp.frequency.value = Math.min(7000, freq * 7);
+   env.connect(lp); lp.connect(dry); lp.connect(send);
+   env.gain.setValueAtTime(0, t);
+   env.gain.linearRampToValueAtTime(vel, t + 0.01);
+   env.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+   const parts = bell ? [[1, 1, 'triangle'], [2.01, 0.45, 'sine'], [2.76, 0.22, 'sine'], [5.4, 0.08, 'sine']]
+      : [[1, 1, 'sine'], [2, 0.35, 'sine'], [3, 0.15, 'sine'], [4, 0.05, 'sine']];
+   for (const [ratio, level, type] of parts) {
+      const o = ctx.createOscillator(), g = ctx.createGain();
+      o.type = type; o.frequency.value = freq * ratio; g.gain.value = level;
+      o.connect(g); g.connect(env);
+      o.start(t); o.stop(t + dur + 0.1);
+   }
+}
