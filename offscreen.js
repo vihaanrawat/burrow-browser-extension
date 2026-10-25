@@ -187,3 +187,27 @@ async function setOwn(on) {
    }
 }
 
+
+/* ---------- control ---------- */
+let current = { playing: false };
+
+async function apply(p) {
+   current = p;
+   if (ctx.state === 'suspended') await ctx.resume().catch(() => { });
+   const t = ctx.currentTime;
+   const wantGen = p.playing && p.mode === 'generated';
+   const wantOwn = p.playing && p.mode === 'own';
+   master.gain.setTargetAtTime(p.playing ? p.volume : 0, t, 0.8);
+   genBus.gain.setTargetAtTime(wantGen ? 1 : 0, t, 0.8);
+   ownBus.gain.setTargetAtTime(wantOwn ? 1 : 0, t, 0.8);
+   setGen(wantGen, p);
+   setOwn(wantOwn);
+   if (!p.playing) setTimeout(() => { if (!current.playing) ctx.suspend(); }, 6000);
+}
+
+chrome.runtime.onMessage.addListener(m => {
+   if (m.target === 'offscreen' && m.type === 'music') apply(m);
+   if (m.type === 'tracks-changed') { own.queue = []; loadTracks().then(() => { if (current.playing && current.mode === 'own' && !own.audio) nextTrack(); }); }
+});
+chrome.runtime.sendMessage({ type: 'offscreen-ready' }).catch(() => { });
+
