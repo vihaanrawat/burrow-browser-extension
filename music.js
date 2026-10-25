@@ -24,3 +24,18 @@ async function render() {
         list.append(li);
     }
 }
+
+$('files').addEventListener('change', async e => {
+    const files = [...e.target.files].filter(f => f.type.startsWith('audio/') || /\.(mp3|ogg|wav|flac|m4a|aac|opus)$/i.test(f.name));
+    let added = 0;
+    for (const f of files) {
+        try { await Burrow.addTrack(f); added++; $('status').textContent = `Added ${added} of ${files.length}...`; }
+        catch { $('status').textContent = `Could not store ${f.name}. The browser may be out of space.`; }
+    }
+    e.target.value = '';
+    if (added) $('status').textContent = `Added ${added} ${added === 1 ? 'track' : 'tracks'}. Pick "My own tracks" in the Burrow popup to play them.`;
+    else if (!files.length) $('status').textContent = 'Those do not look like audio files.';
+    await render(); tell();
+});
+
+skin(); render();
