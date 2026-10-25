@@ -125,3 +125,11 @@ function playChord(t) {
       note(midiToHz(midi(deg)), t + s * step + rand(0, 0.04), rand(th.dur[0], th.dur[1]), rand(0.12, 0.24), th.bell);
    }
 }
+
+function schedule() {
+   const th = THEMES[gen.theme];
+   while (gen.next < ctx.currentTime + 2.5) {
+      playChord(gen.next);
+      gen.next += th.beat * 4;
+   }
+}
