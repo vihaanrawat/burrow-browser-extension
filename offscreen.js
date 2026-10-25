@@ -151,5 +151,39 @@ function setGen(on, p) {
    }
 }
 
+/* ---------- your own tracks ---------- */
+const own = { tracks: [], queue: [], audio: null, src: null, url: null, pauseTimer: 0 };
 
+async function loadTracks() { own.tracks = await Burrow.listTracks().catch(() => []); }
+
+function nextTrack() {
+   if (!own.tracks.length) return;
+   if (!own.queue.length) {
+      own.queue = [...own.tracks];
+      for (let i = own.queue.length - 1; i > 0; i--) {                         // shuffle
+         const j = Math.floor(Math.random() * (i + 1));
+         [own.queue[i], own.queue[j]] = [own.queue[j], own.queue[i]];
+      }
+   }
+   const t = own.queue.pop();
+   if (own.audio) { own.audio.pause(); own.src.disconnect(); URL.revokeObjectURL(own.url); }
+   own.url = URL.createObjectURL(t.blob);
+   own.audio = new Audio(own.url);
+   own.src = ctx.createMediaElementSource(own.audio);
+   own.src.connect(ownBus);
+   own.audio.onended = nextTrack;
+   own.audio.onerror = nextTrack;
+   own.audio.play().catch(() => { });
+}
+
+async function setOwn(on) {
+   clearTimeout(own.pauseTimer);
+   if (on) {
+      if (!own.tracks.length) await loadTracks();
+      if (own.audio && !own.audio.ended) own.audio.play().catch(() => { });
+      else nextTrack();
+   } else if (own.audio) {
+      own.pauseTimer = setTimeout(() => own.audio.pause(), 1500);              // after the fade-out
+   }
+}
 
