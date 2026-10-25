@@ -86,3 +86,6 @@ function note(freq, t, dur, vel, bell) {
       o.start(t); o.stop(t + dur + 0.1);
    }
 }
+
+const gen = { on: false, timer: 0, next: 0, chord: 0, theme: 'hallownest', root: 45, pendingRoot: 45, last: 7 };
+
