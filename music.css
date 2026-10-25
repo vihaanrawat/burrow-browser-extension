@@ -8,3 +8,119 @@
     --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
 
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    color: var(--fg);
+    font: 14px/1.5 var(--sans);
+    background: radial-gradient(90% 70% at 15% 0%, var(--bg2), var(--bg1));
+}
+
+main {
+    max-width: 620px;
+    margin: 0 auto;
+    padding: 40px 24px;
+}
+
+h1 {
+    margin: 0 0 12px;
+    font: italic 600 32px/1 var(--serif);
+}
+
+.lead {
+    margin: 0 0 8px;
+    font-family: var(--serif);
+    font-size: 15px;
+}
+
+.dim {
+    color: var(--dim);
+}
+
+.pick {
+    display: inline-block;
+    margin: 16px 0 6px;
+    padding: 9px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    background: var(--accent);
+    color: var(--bg1);
+    font-weight: 600;
+}
+
+.pick:hover {
+    filter: brightness(1.1);
+}
+
+.pick:focus-within {
+    outline: 2px solid var(--fg);
+    outline-offset: 2px;
+}
+
+.pick input {
+    position: absolute;
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+}
+
+.status {
+    min-height: 20px;
+    margin: 4px 0 14px;
+    color: var(--accent);
+}
+
+.list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.list li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 9px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.list .name {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.list .size {
+    color: var(--dim);
+    font-size: 12px;
+}
+
+button {
+    font: inherit;
+    cursor: pointer;
+    color: var(--fg);
+    padding: 4px 10px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    background: transparent;
+}
+
+button:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+/* the hidden attribute must beat any display rule set above */
+[hidden] {
+    display: none !important;
+}
