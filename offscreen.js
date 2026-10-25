@@ -133,3 +133,23 @@ function schedule() {
       gen.next += th.beat * 4;
    }
 }
+
+function setGen(on, p) {
+   if (p.theme && THEMES[p.theme]) gen.theme = p.theme;
+   if (p.host) gen.pendingRoot = 45 + (Burrow.hashStr(p.host) % 7);            // each site nudges the key
+   const bed = BED[p.mood] || BED.clear;
+   bedFilter.type = bed[0];
+   bedFilter.frequency.setTargetAtTime(bed[1], ctx.currentTime, 1);
+   bedGain.gain.setTargetAtTime(on ? bed[2] : 0, ctx.currentTime, 1.5);
+   if (on && !gen.on) {
+      gen.on = true; gen.next = ctx.currentTime + 0.4; gen.chord = 0;
+      gen.timer = setInterval(schedule, 500);
+      schedule();
+   } else if (!on && gen.on) {
+      gen.on = false; clearInterval(gen.timer);
+      pad.gain.setTargetAtTime(0, ctx.currentTime, 1.2);
+   }
+}
+
+
+
