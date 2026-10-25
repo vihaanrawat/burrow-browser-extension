@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Burrow: your tracks</title>
+    <link rel="stylesheet" href="music.css">
+</head>
+
+<body>
+    <main>
+        <h1>Your tracks</h1>
+        <p class="lead">Add music you own, such as a soundtrack you bought. Burrow plays it in shuffled order while you
+            browse, and pauses it whenever a tab is playing sound.</p>
+        <p class="lead dim">Files are copied into this extension's own storage on this computer. Nothing is uploaded
+            anywhere.</p>
+
+        <label class="pick">
+            <input id="files" type="file" accept="audio/*" multiple>
+            <span>Choose audio files</span>
+        </label>
+        <p id="status" class="status" role="status"></p>
+
+        <ul id="list" class="list"></ul>
+        <p id="empty" class="dim" hidden>No tracks yet.</p>
+    </main>
+    <script src="shared.js"></script>
+    <script src="music.js"></script>
+</body>
+
+</html>
