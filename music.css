@@ -1,0 +1,10 @@
+:root {
+    --bg1: #14181d;
+    --bg2: #212730;
+    --accent: #a3b3c4;
+    --fg: #eef1f4;
+    --dim: #9aa5b1;
+    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
