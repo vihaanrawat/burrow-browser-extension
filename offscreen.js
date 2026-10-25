@@ -63,3 +63,8 @@ const THEMES = {
    hallownest: { scale: [0, 2, 3, 5, 7, 8, 10], prog: [0, 5, 2, 6], beat: 1.7, density: 0.42, arp: false, bell: false, pad: 0.06, dur: [3.5, 5.5] },
    pharloom: { scale: [0, 2, 3, 5, 7, 8, 11], prog: [0, 5, 3, 4], beat: 0.95, density: 0.8, arp: true, bell: true, pad: 0.05, dur: [1.6, 2.6] }
 };
+
+const ARP = [0, 1, 2, 3, 2, 1, 2, 1];
+const midiToHz = m => 440 * Math.pow(2, (m - 69) / 12);
+const degSemi = (scale, n) => scale[((n % 7) + 7) % 7] + 12 * Math.floor(n / 7);
+const rand = (a, b) => a + Math.random() * (b - a);
