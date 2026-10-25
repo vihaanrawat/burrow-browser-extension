@@ -89,3 +89,39 @@ function note(freq, t, dur, vel, bell) {
 
 const gen = { on: false, timer: 0, next: 0, chord: 0, theme: 'hallownest', root: 45, pendingRoot: 45, last: 7 };
 
+function playChord(t) {
+   const th = THEMES[gen.theme];
+   gen.root = gen.pendingRoot;
+   const d = th.prog[gen.chord++ % th.prog.length];
+   const tones = [d, d + 2, d + 4, d + 7];                              // chord degrees, melody register up an octave
+   const midi = n => gen.root + degSemi(th.scale, n);
+   const chordLen = th.beat * 4;
+
+   // pad glides to the new chord
+   [midi(d) - 12, midi(d) - 12, midi(d + 4) - 12, midi(d + 2)].forEach((m, i) => {
+      padVoices[i].frequency.setTargetAtTime(midiToHz(m), t, 1.4);
+   });
+
+   pad.gain.setTargetAtTime(th.pad, t, 1.5);
+
+   note(midiToHz(midi(d) - 12), t, chordLen * 0.9, 0.2, false);          // low root
+
+   const slots = 8, step = chordLen / slots;
+   for (let s = 0; s < slots; s++) {
+      if (th.arp) {
+         if (Math.random() < 0.15) continue;
+         note(midiToHz(midi(tones[ARP[s % ARP.length]]) + 12), t + s * step, rand(th.dur[0], th.dur[1]), rand(0.1, 0.17), true);
+         continue;
+      }
+      if (Math.random() > (s === 0 ? 0.85 : th.density)) continue;
+      let deg;
+      if (Math.random() < 0.3) deg = gen.last + (Math.random() < 0.5 ? -1 : 1);   // a step along the scale
+      else {                                                                      // or a chord tone near the last note
+         const near = tones.map(x => x + 7).sort((a, b) => Math.abs(a - gen.last) - Math.abs(b - gen.last));
+         deg = near[Math.floor(Math.random() * 3)] ?? near[0];
+      }
+      deg = Math.max(d + 2, Math.min(d + 16, deg));
+      gen.last = deg;
+      note(midiToHz(midi(deg)), t + s * step + rand(0, 0.04), rand(th.dur[0], th.dur[1]), rand(0.12, 0.24), th.bell);
+   }
+}
